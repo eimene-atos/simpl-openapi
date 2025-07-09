@@ -4,7 +4,7 @@ info:
   description: Test API for versioning strategy
   version: "1.2.0"
 servers:
-  - url: https://api.example.org/v1
+  - url: https://api.example.org/v1.2.3
 paths:
   /ping:
     get:
