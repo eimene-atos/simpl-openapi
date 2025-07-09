@@ -1,0 +1,19 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sample API - Invalid",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/myProfile": {
+      "get": {
+        "summary": "Get current user profile"
+      }
+    },
+    "/ownFiles": {
+      "get": {
+        "summary": "List own files"
+      }
+    }
+  }
+}
