@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info:
+  title: Resource Details API
+  version: 1.0.0
+  description: API used to validate resource details path structure for TC014.
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /documents/{documentId}:
+    get:
+      summary: Get a single document
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document found
+
+  /documents/{documentId}/details:
+    get:
+      summary: Get document details
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document details found
