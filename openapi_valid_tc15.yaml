@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Validation API
+  description: Test API with proper versioning format
+  version: "1.2.0"
+servers:
+  - url: https://api.example.org/v1
+paths:
+  /example:
+    get:
+      summary: Example endpoint
+      responses:
+        '200':
+          description: OK
