@@ -1,19 +1,55 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Sample API - Valid",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/users": {
-      "get": {
-        "summary": "List users"
-      }
-    },
-    "/documents/{docId}": {
-      "get": {
-        "summary": "Get document by ID"
-      }
-    }
-  }
-}
+openapi: 3.0.3
+info:
+  title: Test API for TC014
+  version: 1.0.0
+  description: Sample API to test resource details endpoint validation.
+
+paths:
+  /documents/{documentId}:
+    get:
+      summary: Get a document by ID
+      responses:
+        '200':
+          description: Document retrieved
+
+  /documents/{documentId}/details:
+    get:
+      summary: Get detailed document info
+      responses:
+        '200':
+          description: Document details retrieved
+
+  /resources/{resourceId}/detail:
+    get:
+      summary: ❌ Incorrect: singular "detail"
+      responses:
+        '200':
+          description: Resource detail retrieved
+
+  /datasets/{id}/information:
+    get:
+      summary: ❌ Incorrect: uses "information" instead of "details"
+      responses:
+        '200':
+          description: Dataset information
+
+  /users/{userId}:
+    get:
+      summary: Valid generic pattern
+      responses:
+        '200':
+          description: User info
+
+  /users/{userId}/details:
+    get:
+      summary: Valid "details" usage
+      responses:
+        '200':
+          description: User details
+
+  /files/{id}/info:
+    get:
+      summary: ❌ Incorrect keyword "info"
+      responses:
+        '200':
+          description: File info
