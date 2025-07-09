@@ -1,0 +1,19 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sample API - Valid",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "List users"
+      }
+    },
+    "/documents/{docId}": {
+      "get": {
+        "summary": "Get document by ID"
+      }
+    }
+  }
+}
