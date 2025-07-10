@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: Content Negotiation API
+  version: 1.0.0
+paths:
+  /items:
+    get:
+      summary: Get items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: string
+components: {}
