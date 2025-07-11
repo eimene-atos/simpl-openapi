@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: Example API
+  version: 1.0.0
+  contact:
+    name: Simpl Programme
+    email: cnect-simpl@ec.europa.eu
+    url: https://simpl-programme.ec.europa.eu/
+
+paths:
+  /example:
+    get:
+      summary: Example endpoint
+      responses:
+        '200':
+          description: OK
