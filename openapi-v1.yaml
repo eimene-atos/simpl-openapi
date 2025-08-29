@@ -1,0 +1,764 @@
+openapi: 3.0.1
+info:
+  title: Advanced Search API
+  description: OpenApi documentation for the Advanced Search API
+  contact:
+    name: Simpl Programme
+    url: https://simpl-programme.ec.europa.eu/
+    email: cnect-simpl@ec.europa.eu
+  license:
+    name: European Union Public License (EUPL) 1.2
+    url: https://interoperable-europe.ec.europa.eu/sites/default/files/custom-page/attachment/eupl_v1.2_en.pdf
+  version: "1.0"
+servers:
+- url: https://xfsc-advsearch-be.dev.simpl-europe.eu/v1
+security:
+- bearerAuth: []
+paths:
+  /search/quick:
+    post:
+      tags:
+      - Search Controller
+      summary: Quick search
+      description: Returns search results
+      operationId: postQuickSearch
+      parameters:
+      - name: searchKey
+        in: query
+        description: Search string
+        required: true
+        schema:
+          type: string
+          description: Search string
+          example: text
+        example: text
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblem'
+              examples:
+                Federated Catalogue Error Example:
+                  description: Federated Catalogue Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteFederatedCatalogueError
+                    title: Federated catalogue not found error
+                    status: 404
+                    detail: '[404 Not Found] during [GET] to ....'
+        "503":
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableProblem'
+              examples:
+                Catalogue Adapter Error Example:
+                  description: Catalogue Adapter Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteCatalogueAdapterError
+                    title: Catalogue adapter error
+                    status: 503
+                    detail: Error during get to ....
+                Federated Catalogue Error Example:
+                  description: Federated Catalogue Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteFederatedCatalogueError
+                    title: Federated catalogue error
+                    status: 503
+                    detail: Error during get to ....
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblem'
+              examples:
+                Unauthorized Error Example:
+                  description: Unauthorized Error Example
+                  value:
+                    type: urn:problem-type:simpl:unauthorized
+                    title: Unauthorized
+                    status: 401
+                    detail: Missing or invalid Authorization header
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestProblem'
+              examples:
+                Bad Request Error Example:
+                  description: Bad Request Error Example
+                  value:
+                    type: urn:problem-type:simpl:validationError
+                    title: Invalid payload
+                    status: 400
+                    detail: missing required arguments
+                    issues:
+                    - detail: Field 'name' must not be empty
+                    - detail: Field 'email' must be a valid email address
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorProblem'
+              examples:
+                Internal Server Error Example:
+                  description: Internal Server Error Example
+                  value:
+                    type: urn:problem-type:simpl:internalServerError
+                    title: Internal Server Error
+                    status: 500
+                    detail: Unexpected internal error
+        "200":
+          description: Returns search results
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                totalCount: 4
+                items:
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v7====
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v1
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v0
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v8====
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+  /search/advanced:
+    post:
+      tags:
+      - Search Controller
+      summary: Advanced search
+      description: Returns search results
+      operationId: postAdvancedSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: Search object
+              example: '{"simpl:GeneralServiceProperties":{"@type":"simpl:GeneralServiceProperties","name":"test"}}'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblem'
+              examples:
+                Federated Catalogue Error Example:
+                  description: Federated Catalogue Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteFederatedCatalogueError
+                    title: Federated catalogue not found error
+                    status: 404
+                    detail: '[404 Not Found] during [GET] to ....'
+        "503":
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableProblem'
+              examples:
+                Catalogue Adapter Error Example:
+                  description: Catalogue Adapter Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteCatalogueAdapterError
+                    title: Catalogue adapter error
+                    status: 503
+                    detail: Error during get to ....
+                Federated Catalogue Error Example:
+                  description: Federated Catalogue Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteFederatedCatalogueError
+                    title: Federated catalogue error
+                    status: 503
+                    detail: Error during get to ....
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblem'
+              examples:
+                Unauthorized Error Example:
+                  description: Unauthorized Error Example
+                  value:
+                    type: urn:problem-type:simpl:unauthorized
+                    title: Unauthorized
+                    status: 401
+                    detail: Missing or invalid Authorization header
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestProblem'
+              examples:
+                Bad Request Error Example:
+                  description: Bad Request Error Example
+                  value:
+                    type: urn:problem-type:simpl:validationError
+                    title: Invalid payload
+                    status: 400
+                    detail: missing required arguments
+                    issues:
+                    - detail: Field 'name' must not be empty
+                    - detail: Field 'email' must be a valid email address
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorProblem'
+              examples:
+                Internal Server Error Example:
+                  description: Internal Server Error Example
+                  value:
+                    type: urn:problem-type:simpl:internalServerError
+                    title: Internal Server Error
+                    status: 500
+                    detail: Unexpected internal error
+        "200":
+          description: Returns search results
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                totalCount: 4
+                items:
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v7====
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v1
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v0
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+                - i:
+                    claimsGraphUri:
+                    - did:web:registry.gaia-x.eu:DataOffering:fMw2UtNCDW-ydI83YKscqCKa-n75jJ0qY7v8====
+                    name: aefaf
+                    description: afafa
+                    inLanguage: en
+                    serviceAccessPoint: https://creation.com
+  /shape/files:
+    get:
+      tags:
+      - Shape Controller
+      summary: Get all ttl file based on ecosystem
+      description: Return all available shapes ttl file based on ecosystem
+      operationId: getFiles
+      parameters:
+      - name: ecosystem
+        in: query
+        description: Ecosystem name
+        required: true
+        schema:
+          type: string
+          description: Ecosystem name
+          example: simpl
+        example: simpl
+      responses:
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblem'
+              examples:
+                Unauthorized Error Example:
+                  description: Unauthorized Error Example
+                  value:
+                    type: urn:problem-type:simpl:unauthorized
+                    title: Unauthorized
+                    status: 401
+                    detail: Missing or invalid Authorization header
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestProblem'
+              examples:
+                Bad Request Error Example:
+                  description: Bad Request Error Example
+                  value:
+                    type: urn:problem-type:simpl:validationError
+                    title: Invalid payload
+                    status: 400
+                    detail: missing required arguments
+                    issues:
+                    - detail: Field 'name' must not be empty
+                    - detail: Field 'email' must be a valid email address
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorProblem'
+              examples:
+                Internal Server Error Example:
+                  description: Internal Server Error Example
+                  value:
+                    type: urn:problem-type:simpl:internalServerError
+                    title: Internal Server Error
+                    status: 500
+                    detail: Unexpected internal error
+        "200":
+          description: Returns the list of available TTL files for the specified ecosystem
+          content:
+            application/json:
+              schema:
+                type: string
+              example:
+                Service:
+                - application-offeringShape.ttl
+                - data-offeringShape.ttl
+                - infrastructure-offeringShape.ttl
+  /shape/file:
+    get:
+      tags:
+      - Shape Controller
+      summary: Get ttl schema file based on ecosystem and file name
+      description: Return the file shape ttl if present
+      operationId: getFile
+      parameters:
+      - name: ecosystem
+        in: query
+        description: Ecosystem name
+        required: true
+        schema:
+          type: string
+          description: Ecosystem name
+          example: simpl
+        example: simpl
+      - name: fileName
+        in: query
+        description: File name
+        required: true
+        schema:
+          type: string
+          description: File name
+          example: data-offeringShape.ttl
+        example: data-offeringShape.ttl
+      responses:
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblem'
+              examples:
+                Unauthorized Error Example:
+                  description: Unauthorized Error Example
+                  value:
+                    type: urn:problem-type:simpl:unauthorized
+                    title: Unauthorized
+                    status: 401
+                    detail: Missing or invalid Authorization header
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestProblem'
+              examples:
+                Bad Request Error Example:
+                  description: Bad Request Error Example
+                  value:
+                    type: urn:problem-type:simpl:validationError
+                    title: Invalid payload
+                    status: 400
+                    detail: missing required arguments
+                    issues:
+                    - detail: Field 'name' must not be empty
+                    - detail: Field 'email' must be a valid email address
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorProblem'
+              examples:
+                Internal Server Error Example:
+                  description: Internal Server Error Example
+                  value:
+                    type: urn:problem-type:simpl:internalServerError
+                    title: Internal Server Error
+                    status: 500
+                    detail: Unexpected internal error
+        "200":
+          description: Returns the content of the specified TTL file
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: |
+                @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                @prefix sh: <http://www.w3.org/ns/shacl#> .
+                @prefix simpl: <http://w3id.org/gaia-x/simpl#> .
+                @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+                simpl:DataOfferingShape
+                  rdf:type sh:NodeShape ;
+                  sh:targetClass simpl:DataOffering ;
+                  sh:property [
+                    sh:path simpl:name ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1 ;
+                    sh:description "The name of the data offering." ;
+                  ] ;
+                  sh:property [
+                    sh:path simpl:description ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 0 ;
+                    sh:maxCount 1 ;
+                    sh:description "A description of the data offering." ;
+                  ] ;
+                  sh:property [
+                    sh:path simpl:format ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1 ;
+                    sh:description "The format of the data offering, e.g. XML, JSON, CSV." ;
+                  ] .
+  /search:
+    get:
+      tags:
+      - Search Controller
+      summary: Get self description
+      description: Returns self description
+      operationId: getSelfDescriptions
+      parameters:
+      - name: id
+        in: query
+        description: Id of self description
+        required: true
+        schema:
+          type: string
+          description: Id of self description
+          example: text
+        example: text
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProblem'
+              examples:
+                Federated Catalogue Error Example:
+                  description: Federated Catalogue Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteFederatedCatalogueError
+                    title: Federated catalogue not found error
+                    status: 404
+                    detail: '[404 Not Found] during [GET] to ....'
+        "503":
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableProblem'
+              examples:
+                Catalogue Adapter Error Example:
+                  description: Catalogue Adapter Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteCatalogueAdapterError
+                    title: Catalogue adapter error
+                    status: 503
+                    detail: Error during get to ....
+                Federated Catalogue Error Example:
+                  description: Federated Catalogue Error Example
+                  value:
+                    type: urn:problem-type:simpl:remoteFederatedCatalogueError
+                    title: Federated catalogue error
+                    status: 503
+                    detail: Error during get to ....
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedProblem'
+              examples:
+                Unauthorized Error Example:
+                  description: Unauthorized Error Example
+                  value:
+                    type: urn:problem-type:simpl:unauthorized
+                    title: Unauthorized
+                    status: 401
+                    detail: Missing or invalid Authorization header
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestProblem'
+              examples:
+                Bad Request Error Example:
+                  description: Bad Request Error Example
+                  value:
+                    type: urn:problem-type:simpl:validationError
+                    title: Invalid payload
+                    status: 400
+                    detail: missing required arguments
+                    issues:
+                    - detail: Field 'name' must not be empty
+                    - detail: Field 'email' must be a valid email address
+        "500":
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorProblem'
+              examples:
+                Internal Server Error Example:
+                  description: Internal Server Error Example
+                  value:
+                    type: urn:problem-type:simpl:internalServerError
+                    title: Internal Server Error
+                    status: 500
+                    detail: Unexpected internal error
+        "200":
+          description: Returns self description
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                '@context':
+                - https://www.w3.org/2018/credentials/v1
+                - https://w3id.org/security/suites/jws-2020/v1
+                credentialSubject:
+                  '@context':
+                    gax-validation: http://w3id.org/gaia-x/validation#
+                    rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+                    sh: http://www.w3.org/ns/shacl#
+                    simpl: http://w3id.org/gaia-x/simpl#
+                    skos: http://www.w3.org/2004/02/skos/core#
+                    xsd: http://www.w3.org/2001/XMLSchema#
+                  '@id': did:web:registry.gaia-x.eu:DataOffering:4727baa4-8c7b-4e7f-90ba-eebe460c0408
+                  rdf:type:
+                    '@id': simpl:DataOffering
+                  simpl:contractTemplate:
+                    rdf:type:
+                      '@id': simpl:ContractTemplate
+                    simpl:contractTemplateDocument: Contract Template 1
+                    simpl:contractTemplateHashAlg: SHA256
+                    simpl:contractTemplateHashValue: 22275fe551e7a16f5f2c1cc10d39a534f547323d877109d98b8e8730047bc5ed
+                    simpl:contractTemplateURL: https://files.dev.simpl-europe.eu/static/contract/ContractTemplate1.json
+                  simpl:dataProperties:
+                    rdf:type:
+                      '@id': simpl:DataProperties
+                    simpl:format: xml
+                  simpl:edcConnector:
+                    simpl:providerEndpointURL: https://edc-provider.dev.simpl-europe.eu
+                  simpl:generalServiceProperties:
+                    rdf:type:
+                      '@id': simpl:GeneralServiceProperties
+                    simpl:name: Test Data Offering
+                    simpl:description: A comprehensive data offering for testing purposes
+                    simpl:inLanguage: en
+                issuanceDate: 2024-12-03T13:52:45.111955862Z
+                issuer: did:web:did.dev.simpl-europa.eu
+                proof:
+                  created: 2024-12-03T13:52:45.122614972Z
+                  jws: eyJhbGciOiJVbmRlZmluZWQiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..pfkY4hJ3kDMSmUUHaUq6c-Y_wHCKbp7J09MpByLJ9C433Th8EfgM69snZEMYzJISwjtowdq0BXiuDoPIPFcRBw
+                  proofPurpose: assertionMethod
+                  type: JsonWebSignature2020
+                  verificationMethod: did:web:did.dev.simpl-europa.eu#gaia-x-key1
+                type: VerifiableCredential
+components:
+  schemas:
+    UnauthorizedProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+    BadRequestProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputValidationIssue'
+    InputObject:
+      type: object
+      properties:
+        in:
+          type: string
+          enum:
+          - body
+          - path
+          - query
+          - header
+        name:
+          type: string
+        value:
+          type: object
+    InputValidationIssue:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+        detail:
+          type: string
+        in:
+          type: string
+          enum:
+          - body
+          - path
+          - query
+          - header
+        name:
+          type: string
+        value:
+          type: object
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputObject'
+    InternalServerErrorProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+    NotFoundProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+    ServiceUnavailableProblem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        href:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: IAA cloud gateway JWT token
+      scheme: bearer
+      bearerFormat: JWT
